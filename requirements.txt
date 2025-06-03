@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+httpx
+dotenv
+pyannote.audio
+torch
+google-genai
+python-multipart

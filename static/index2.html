@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Gemini Platform</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        #chat { margin-top: 2em; }
+        #messages { border: 1px solid #ccc; padding: 1em; height: 200px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>Upload a Video</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" accept="video/*" required>
+        <button type="submit">Upload</button>
+    </form>
+    <div id="summary"></div>
+    <div id="chat" style="display:none;">
+        <h2>Chat with Video</h2>
+        <div id="messages"></div>
+        <form id="chatForm">
+            <input type="text" id="message" placeholder="Ask about the video..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script>
+        let videoId = null;
+        document.getElementById('uploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const resp = await fetch('/upload', { method: 'POST', body: formData });
+            const data = await resp.json();
+            videoId = data.video_id;
+            document.getElementById('summary').innerHTML = `<h2>Video Summary</h2><p>${data.summary}</p>`;
+            document.getElementById('chat').style.display = 'block';
+            document.getElementById('messages').innerHTML = `<div><b>Gemini:</b> ${data.summary}</div>`;
+        };
+        document.getElementById('chatForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const msg = document.getElementById('message').value;
+            document.getElementById('messages').innerHTML += `<div><b>You:</b> ${msg}</div>`;
+            document.getElementById('message').value = '';
+            const formData = new FormData();
+            formData.append('video_id', videoId);
+            formData.append('message', msg);
+            const resp = await fetch('/chat', { method: 'POST', body: formData });
+            const data = await resp.json();
+            document.getElementById('messages').innerHTML += `<div><b>Gemini:</b> ${data.reply}</div>`;
+            document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
+        };
+    </script>
+</body>
+</html>
