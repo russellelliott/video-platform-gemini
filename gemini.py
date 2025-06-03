@@ -7,8 +7,10 @@ from google import genai
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY)
 
-path_old = "/Users/russellelliott/Desktop/UCSC Grad School/Year 1/Spring 2025/CMPM290A/video-platform-gemini/uploaded_videos/e21e7572-eb03-4529-9b2e-44862a7f8bfa_Sensitive Data Detector.mp4"
-path = "/Users/russellelliott/Desktop/UCSC Grad School/Year 1/Spring 2025/CMPM290A/video-platform-gemini/uploads/Plivo Demo (compressed).mp4"
+path_old = "/Users/russellelliott/Desktop/UCSC Grad School/Year 1/Spring 2025/CMPM290A/video-platform-gemini/uploaded_videos/Sensitive Data Detector.mp4"
+path = "/Users/russellelliott/Desktop/UCSC Grad School/Year 1/Spring 2025/CMPM290A/video-platform-gemini/uploaded_videos/Plivo Demo (compressed).mp4"
+#path = "/Users/russellelliott/Desktop/UCSC Grad School/Year 1/Spring 2025/CMPM290A/video-platform-gemini/uploaded_videos/Plivo Demo.mp4"
+
 
 myfile = client.files.upload(file=path)
 
